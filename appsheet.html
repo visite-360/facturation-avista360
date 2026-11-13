@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AppSheet &amp; Automatisation — A Vista 360°</title>
+<link rel="canonical" href="https://facturation.avista360.fr/appsheet.html">
+<meta name="description" content="Développement d'applications AppSheet et automatisation Google Workspace en Corse : devis, factures, rapports, tableaux de bord. A Vista 360°, expert depuis 2017.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --v-font-title: "Cormorant Garamond", Georgia, serif;
+    --v-font-body: Manrope, "Segoe UI", Roboto, Arial, sans-serif;
+    --v-radius-card: 16px;
+    --v-shadow-sm: 0 1px 3px rgba(60,64,67,.12);
+    --v-shadow-lg: 0 8px 24px rgba(60,64,67,.22);
+    --v-transition: all .25s ease;
+
+    /* Palette A Vista 360 */
+    --v-bg-section: #f7f2e7;
+    --v-bg-section-alt: #efe7d6;
+    --v-bg-card: #fffdf8;
+    --v-txt-primary: #0b1524;
+    --v-txt-secondary: #5f6673;
+    --v-brand: #a67c3d;
+    --v-gold: #c9a468;
+    --v-line: rgba(11,21,36,.14);
+    --v-ink: #0b1524;
+  }
+
+  /* Mode sombre : nuit + or */
+  :root.dark {
+    --v-bg-section: #0b1524;
+    --v-bg-section-alt: #08111f;
+    --v-bg-card: #12202f;
+    --v-txt-primary: #f7f2e7;
+    --v-txt-secondary: #b9b3a5;
+    --v-line: rgba(247,242,231,.16);
+    --v-brand: #c9a468;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      --v-bg-section: #0b1524;
+      --v-bg-section-alt: #08111f;
+      --v-bg-card: #12202f;
+      --v-txt-primary: #f7f2e7;
+      --v-txt-secondary: #b9b3a5;
+      --v-line: rgba(247,242,231,.16);
+      --v-brand: #c9a468;
+    }
+  }
+
+  .v-reset * { box-sizing: border-box; margin:0; padding:0; }
+  body { background: var(--v-bg-section); color: var(--v-txt-primary); font-family: var(--v-font-body); }
+  .v-container { font-family: var(--v-font-body); width: 100%; }
+
+  /* ===== HEADER BANNIÈRE — 520 px, inchangé ===== */
+  .v-header-banner {
+    width: 100%;
+    height: 520px;
+    background-image: url('https://avista-360.github.io/vista360-assets/images/360/Site_Header_Image_AppSheet_1.jpg');
+    background-size: cover;
+    background-position: left center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    color: #fff;
+    text-shadow: 0 2px 14px rgba(0,0,0,.75);
+    overflow: hidden;
+    position: relative;
+    border-radius: 30px 30px 30px 30px;
+    margin-bottom: 3rem;
+  }
+  .v-header-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: inherit;
+    background-size: cover;
+    background-position: inherit;
+    background-repeat: no-repeat;
+    transition: transform .8s ease;
+    z-index: 0;
+  }
+  .v-header-banner:hover::before { transform: scale(1.05); }
+  .v-header-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(8,16,28,.80) 0%, rgba(8,16,28,.94) 100%),
+      radial-gradient(80% 90% at 50% 45%, rgba(11,21,36,.55), rgba(11,21,36,.15) 75%),
+      radial-gradient(90% 120% at 80% 0%, rgba(201,164,104,.18), transparent 60%);
+    z-index: 0;
+  }
+  .v-header-banner > * { position: relative; z-index: 1; }
+  .v-header-content { position:relative; z-index:1; max-width:90%; }
+  .v-header-content img.v-header-logo {
+    max-width:220px; height:auto; width:120px; margin-bottom:1rem; display:block; margin-left:auto; margin-right:auto;
+    border-radius:50%;
+  }
+  .v-header-content h1 {
+    font-family: var(--v-font-title);
+    font-weight: 500;
+    font-size: clamp(2.2rem,5.5vw,3.4rem);
+    letter-spacing:.02em;
+    margin-bottom:.25rem;
+  }
+  .v-header-content p {
+    font-size: clamp(1.05rem,2.6vw,1.5rem);
+    font-style: italic;
+    font-family: var(--v-font-title);
+    color: #f3ead7;
+  }
+  @media (max-width: 768px) {
+    .v-header-banner { background-position: center; height: 320px; }
+  }
+
+  /* ===== BLOC CONTENU — 900 px, inchangé ===== */
+  .vista-workspace {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: var(--v-bg-card);
+    border: 1px solid var(--v-line);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(11,21,36,.08);
+    font-family: var(--v-font-body);
+    line-height: 1.6;
+    color: var(--v-txt-primary);
+  }
+  .vista-workspace h2 {
+    font-family: var(--v-font-title);
+    font-weight: 500;
+    color: var(--v-ink);
+    font-size: 2rem;
+    line-height: 1.15;
+    margin: 2rem 0 1rem;
+    letter-spacing: -.01em;
+  }
+  .vista-workspace h2:first-child { margin-top: 0; }
+  .vista-workspace h2.lead-title { font-size: 2.5rem; }
+  .vista-workspace h2.gold-title { color: var(--v-brand); }
+  .vista-workspace h2.navy-title { color: var(--v-ink); }
+  .vista-workspace h3 {
+    font-family: var(--v-font-title);
+    font-weight: 600;
+    color: var(--v-brand);
+    font-size: 1.25rem;
+    margin: 1.5rem 0 .75rem;
+  }
+  .vista-workspace p { margin-bottom: 1rem; color: var(--v-txt-primary); }
+  .vista-workspace b, .vista-workspace strong { color: var(--v-ink); }
+  .vista-workspace a { color: var(--v-brand); text-decoration: none; border-bottom: 1px solid rgba(166,124,61,.35); }
+  .vista-workspace a:hover { border-bottom-color: var(--v-brand); }
+  .vista-workspace ul { list-style: none; padding: 0; margin-bottom: 1rem; }
+  .vista-workspace ul li {
+    margin-bottom: .8rem;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--v-txt-secondary);
+  }
+  .vista-workspace ul li::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: var(--v-brand);
+    font-weight: bold;
+  }
+  .vista-workspace ol { padding-left: 1.2rem; margin-bottom: 1rem; }
+  .vista-workspace ol li { margin-bottom: .6rem; color: var(--v-txt-secondary); }
+
+  /* ===== FORMULAIRE — mêmes dimensions, habillage or ===== */
+  .v-form-box {
+    border: 2px solid var(--v-brand);
+    border-radius: 10px;
+    padding: 20px;
+    background: var(--v-bg-section-alt);
+    max-width: 500px;
+    margin: 20px auto;
+  }
+  .v-form-box h3 {
+    color: var(--v-ink);
+    text-align: center;
+    font-family: var(--v-font-title);
+    font-size: 1.4rem;
+    margin: 0 0 .4rem;
+  }
+  .v-form-box label { display:block; margin-bottom:10px; font-size:.95rem; color: var(--v-txt-secondary); }
+  .v-form-box input[type=text] {
+    width: 100%; padding: 10px; margin-bottom: 15px;
+    border: 1px solid var(--v-line); border-radius: 5px; background:#fff;
+    font-family: inherit; color:#0b1524;
+  }
+  .v-form-box input[type=submit] {
+    background-color: var(--v-brand); color: #fff; padding: 12px 20px;
+    border: none; border-radius: 5px; cursor: pointer; width: 100%;
+    font-family: inherit; font-weight: 700;
+  }
+  .v-form-box input[type=submit]:hover { background-color: var(--v-ink); }
+
+  /* ===== CARTES (héritées, inchangées en dimensions) ===== */
+  .v-row { display:flex; flex-wrap:wrap; justify-content:center; gap:24px; margin-bottom:2.5rem; }
+  .v-card {
+    width:140px; max-width:100%; min-height:150px;
+    background:var(--v-bg-card); border:1px solid var(--v-line);
+    border-radius:var(--v-radius-card); box-shadow:var(--v-shadow-sm);
+    padding:1.25rem .75rem 1.5rem; text-align:center; text-decoration:none;
+    color:var(--v-txt-primary); position:relative; transition:var(--v-transition); cursor:pointer;
+  }
+  .v-card:hover, .v-card:focus-visible { transform:translateY(-4px) scale(1.02); box-shadow:var(--v-shadow-lg); }
+  .v-card img { width:40px; height:40px; margin-bottom:.5rem; display:block; margin-left:auto; margin-right:auto; }
+  .v-card-label { font-size:.95rem; font-weight:600; margin-bottom:.25rem; }
+  .v-card-desc { font-size:.78rem; line-height:1.2; color:var(--v-txt-secondary); }
+  @media (max-width:1024px){ .v-card{width:120px;} }
+  @media (max-width:768px){ .v-row{gap:16px;} .v-card{width:30vw;min-width:120px;} }
+  @media (max-width:600px){ .v-card{width:44%;} }
+  @media (max-width:420px){ .v-card{width:90%;} }
+
+  /* ===== SECTION TITRES ===== */
+  .v-section { width:100%; padding:3rem 1rem 2rem; background:var(--v-bg-section); text-align:center; }
+  .v-section.alt { background:var(--v-bg-section-alt); }
+  .v-section h2 { font-family:var(--v-font-title); font-weight:500; color:var(--v-txt-primary); font-size:clamp(1.8rem,3.5vw,2.4rem); margin-bottom:.5rem; }
+  .v-section p.v-section-sub { color:var(--v-txt-secondary); font-size:1rem; margin-bottom:2.5rem; max-width:640px; margin-left:auto; margin-right:auto; line-height:1.4; }
+
+  /* ===== FOOTER ===== */
+  footer { background-color: var(--v-bg-card); padding: 2rem 0; border-top: 1px solid var(--v-line); }
+  .footer-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+  .footer-section h4 { font-weight: 700; margin-bottom: 1rem; color: var(--v-brand); font-size:.95rem; letter-spacing:.02em; }
+  .footer-section a { color: var(--v-txt-secondary); text-decoration: none; transition: color .3s ease; font-size:.92rem; }
+  .footer-section a:hover { color: var(--v-brand); }
+  .footer-section ul { list-style:none; }
+  .footer-section li { margin-bottom:.5rem; }
+  .footer-logo { width:112px; height:auto; object-fit:contain; }
+  .footer-desc { font-size:.85rem; color:var(--v-txt-secondary); margin-top:.5rem; max-width:26ch; }
+  .social-icons { display: flex; gap: 1rem; }
+  .social-icons a { color: var(--v-txt-secondary); }
+  .social-icons svg { width:24px; height:24px; display:block; }
+  .social-icons a:hover { color: var(--v-brand); }
+  .copyright { text-align: center; padding: 1rem 0; border-top: 1px solid var(--v-line); color: var(--v-txt-secondary); font-size:.85rem; }
+
+  /* ===== RDV sticky ===== */
+  .v-rdv-sticky {
+    display:none; position:fixed; bottom:16px; right:16px; z-index:9999;
+    background: var(--v-ink); color:#f7f2e7; padding:14px 22px; font-size:1rem; font-weight:600;
+    border-radius:999px; text-decoration:none; box-shadow:0 4px 16px rgba(11,21,36,.35);
+  }
+  .v-rdv-sticky:hover { background: var(--v-brand); }
+  @media (max-width:600px){ .v-rdv-sticky{display:inline-block;} }
+</style>
+</head>
+<body>
+<div class="v-container v-reset">
+
+  <!-- ================= HEADER ================= -->
+  <header class="v-header-banner">
+    <div class="v-header-content">
+      <img class="v-header-logo" src="https://avista-360.github.io/vista360-assets/images/LogoOeil.png" width="120" height="120" alt="A Vista 360">
+      <h1>A Vista 360°</h1>
+      <p>L'Automatisation au cœur de votre productivité &amp; <br>Développement AppSheet en Corse</p>
+    </div>
+  </header>
+
+  <!-- ================= APPSHEET / WORKSPACE ================= -->
+  <div class="vista-workspace">
+    <h2 class="lead-title">AppSheet — Solutions de développement d'applications automatisées</h2>
+    <p>
+      Chez <strong>A Vista 360°</strong>, nous avons une mission claire : rendre votre entreprise plus <strong>productive</strong>, plus <strong>visible</strong> et plus <strong>efficace</strong>.
+      Basés en Corse, nous aidons les entrepreneurs, artisans, commerçants et PME à tirer parti de la puissance de l'écosystème
+      <strong>Google Workspace</strong> et en particulier de <strong>Google AppSheet</strong> pour automatiser les tâches, simplifier la gestion et centraliser l'information.
+      Nous créons un automatisme sur mesure qui allège vos tâches quotidiennes, vous permettant de vous concentrer sur ce qui compte vraiment : la croissance de votre activité.<br><br>
+      Notre mission est de rendre les petites et moyennes entreprises plus performantes. Pour cela, nous transformons les outils que vous utilisez déjà, comme Sheets, Drive ou AppSheet, en véritables moteurs de productivité.
+      Grâce à un développement intelligent, nous éliminons les processus répétitifs et chronophages.
+    </p>
+
+    <h2 class="gold-title">Pourquoi AppSheet ?</h2>
+    <p>
+      <strong>AppSheet</strong> est la plateforme no-code de Google qui permet de créer des applications personnalisées à partir de vos propres données
+      (Google Sheets, BigQuery, Drive, etc.) sans écrire une seule ligne de code. C'est l'outil idéal pour créer
+      <em>l'application métier</em> qui colle parfaitement à votre activité : suivi des clients, gestion de stocks, rapports d'intervention, formulaires de terrain, tout est possible.
+    </p>
+    <p>
+      L'avantage ? Votre application AppSheet fait partie intégrante de <strong>Google Workspace</strong> : connexion sécurisée avec votre compte pro, intégration totale avec Gmail, Drive, Agenda,
+      et synchronisation instantanée entre les équipes.
+    </p>
+
+    <h2 class="gold-title">A Vista 360° — votre partenaire AppSheet</h2>
+    <p>
+      Depuis <strong>2017</strong>, A Vista 360° conçoit et déploie des applications AppSheet qui répondent précisément à vos besoins.
+      Nous ne faisons pas que créer une application : nous automatisons vos process, nous connectons vos outils, et nous vous formons pour que vous soyez autonome.
+    </p>
+
+    <h3>Quelques exemples d'automatisations que nous réalisons :</h3>
+    <ul>
+      <li>Envoi automatique de rapports PDF personnalisés à partir de formulaires terrain.</li>
+      <li>Récupération en temps réel de données clients via API et mise à jour instantanée dans Google Sheets.</li>
+      <li>Alertes et rappels automatiques par e-mail ou SMS selon des critères précis.</li>
+      <li>Tableaux de bord centralisés pour suivre votre activité en direct.</li>
+      <li>Synchronisation entre plusieurs équipes, même sans connexion internet (mode offline).</li>
+    </ul>
+    <p>
+      Chaque solution que nous développons est pensée pour <strong>éliminer les tâches répétitives</strong>, réduire les erreurs humaines et vous permettre de
+      <em>vous concentrer sur votre cœur de métier</em>.
+    </p>
+    <p>« Découvrir Google AppSheet en 48 heures » <a href="https://pablofelip.online/discovering-google-appsheet-in-48-hours-part-i/" target="_blank" rel="noopener">en savoir plus</a></p>
+
+    <h2 class="gold-title">Pourquoi choisir A Vista 360° ?</h2>
+    <p>
+      Nous ne sommes pas qu'un prestataire technique. Nous sommes votre <strong>allié stratégique</strong>. En tant qu'expert Google Workspace et AppSheet, nous travaillons à vos côtés
+      pour comprendre vos objectifs, vos contraintes et votre marché local.
+    </p>
+    <p>Notre approche repose sur trois piliers :</p>
+    <ol>
+      <li><strong>Analyse</strong> : comprendre votre activité et vos processus actuels.</li>
+      <li><strong>Création</strong> : développer une application et un système d'automatisation sur mesure.</li>
+      <li><strong>Formation</strong> : vous transmettre la maîtrise de l'outil pour une autonomie totale.</li>
+    </ol>
+
+    <h2 class="navy-title">Les bénéfices pour votre entreprise</h2>
+    <ul>
+      <li><strong>Gain de temps</strong> : vos tâches récurrentes deviennent automatiques.</li>
+      <li><strong>Précision</strong> : réduction drastique des erreurs humaines.</li>
+      <li><strong>Visibilité</strong> : données accessibles en temps réel, où que vous soyez.</li>
+      <li><strong>Scalabilité</strong> : votre solution évolue avec votre entreprise.</li>
+    </ul>
+
+    <h2 class="gold-title">Un audit gratuit de votre fiche Google Business</h2>
+    <p>
+      Votre visibilité en ligne commence par une fiche Google Business optimisée. Nous vous proposons un <strong>audit complet offert</strong> :
+      analyse de votre fiche, recommandations et idées d'automatisation pour booster votre présence en ligne.
+    </p>
+
+    <!-- Formulaire simple -->
+    <div class="v-form-box">
+      <h3>Recevez votre audit gratuit</h3>
+      <form action="mailto:contact@avista360.fr" method="post" enctype="text/plain">
+        <label for="gmb">Nom de votre fiche Google Business :</label>
+        <input type="text" id="gmb" name="Nom de fiche Google" placeholder="Exemple : A Vista 360 Ajaccio">
+        <input type="submit" value="Envoyer ma demande">
+      </form>
+    </div>
+
+    <h2 class="navy-title">En savoir plus</h2>
+    <p>Découvrez également nos autres services :</p>
+    <ul>
+      <li><a href="https://www.avista360.fr/productivit%C3%A9/packs-tarifs-workspace">Expert Google Workspace</a></li>
+      <li><a href="https://www.avista360.fr/visibilit%C3%A9/visite-virtuelle-google-street-view-en-corse">Photographe agréé Street View Trusted</a></li>
+      <li><a href="https://www.avista360.fr/visibilit%C3%A9/production/video-corse">Production vidéo professionnelle</a></li>
+      <li><a href="https://www.avista360.fr/productivit%C3%A9/solutions/formation">Formations Google Workspace</a></li>
+      <li><a href="https://www.avista360.fr/visibilit%C3%A9/production/creation-site-web">Création de sites web optimisés</a></li>
+    </ul>
+
+    <!-- ================= WORKSPACE PARTENAIRE ================= -->
+    <h2 class="gold-title">Google Workspace — gagnez en productivité et visibilité</h2>
+    <p><b>Google Workspace</b> est la suite de productivité cloud de Google qui vous permet, à vous et à votre équipe, de communiquer, collaborer et travailler efficacement, où que vous soyez et depuis n'importe quel appareil.</p>
+    <p>Simple à configurer, à utiliser et à gérer, Google Workspace vous libère des contraintes techniques pour vous concentrer sur l'essentiel : <b>le développement de votre activité</b>.</p>
+
+    <p>
+      🎥 <a href="https://www.youtube.com/c/googleworkspace" target="_blank" rel="noopener">Regardez la vidéo officielle</a><br>
+      📄 <a href="https://referworkspace.app.goo.gl/one-pager-FR" target="_blank" rel="noopener">En savoir plus sur Workspace</a>
+    </p>
+
+    <h3>Les avantages pour votre entreprise</h3>
+    <ul>
+      <li><b>Messagerie professionnelle</b> — Renforcez votre image de marque avec une adresse personnalisée <i>vous@votreentreprise.com</i>.</li>
+      <li><b>Accessibilité totale</b> — E-mails, fichiers, documents, visioconférences : travaillez partout, sur tous vos appareils.</li>
+      <li><b>Outils d'administration avancés</b> — Contrôlez utilisateurs, appareils et sécurité depuis un tableau de bord centralisé.</li>
+    </ul>
+
+    <p>
+      🚀 <b>Essayez gratuitement pendant 14 jours</b> via ce lien :<br>
+      <a class="referral__link" href="https://referworkspace.app.goo.gl/Tm4f" target="_blank" rel="noopener"><b>Activer mon essai Workspace</b></a>
+    </p>
+
+    <p>Permettez à vos clients de choisir un créneau <img src="https://ssl.gstatic.com/calendar/images/dynamiclogo_2020q4/calendar_24_2x.png?text=google+workspace" width="24" height="24" alt="RDV / Calendar" style="vertical-align:middle"> avec la planification des rendez-vous en un clic.<br>
+      <a href="https://rdv.avista360.com" target="_blank" rel="noopener">Prendre rendez-vous en un clic</a></p>
+    <p><i>Bonus A Vista 360 : contactez-moi après votre inscription pour bénéficier d'une remise exclusive.</i></p>
+  </div>
+
+  <!-- YouTube -->
+  <div class="vista-workspace" style="text-align: center; margin-top: 2rem;">
+    <iframe width="100%" height="355" src="https://www.youtube.com/embed/X_ESBEZIU-M?si=5k0FTfsL1AaOuXqC"
+    style="border-radius: 20px; border:0; max-width:100%;"
+    title="Rapport audit" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <a href="https://www.avista360.fr/">
+        <img src="https://avista-360.github.io/vista360-assets/01LogoVista360.png" alt="A Vista 360" class="footer-logo">
+      </a>
+      <p class="footer-desc">Expert Google Workspace. Photographie, vidéo, digital marketing.</p>
+    </div>
+
+    <div class="footer-section">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="https://www.avista360.fr/accueil">Accueil</a></li>
+        <li><a href="https://www.avista360.fr/vista360/recrutement">Recrutement</a></li>
+        <li><a href="https://www.avista360.fr/a-propos">À propos</a></li>
+        <li><a href="mailto:contact@avista360.fr?subject=Demande%20d'information">Contact</a></li>
+        <li><a href="https://www.avista360.fr/mentions-l%C3%A9gales">Mentions légales</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Solutions Workspace</h4>
+      <ul>
+        <li><a href="https://audit.avista360.com/audit-gratuit">Votre audit gratuit de présence locale</a></li>
+        <li><a href="https://resa.avista360.com">Démo de réservation</a></li>
+        <li><a href="https://galerie.avista360.com">Démo de galerie multimédias</a></li>
+        <li><a href="https://prospection.avista360.com">Solutions de prospection</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Suivez-nous</h4>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/avista360" aria-label="Facebook"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-2.308c0-1.769.931-2.692 3.029-2.692h1.971v3z"/></svg></a>
+        <a href="https://www.instagram.com/avista_360/" aria-label="Instagram"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.148-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a href="https://www.linkedin.com/in/avista360/" aria-label="LinkedIn"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.784 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+        <a href="https://x.com/avistacom" aria-label="X"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.723 0-4.928 2.206-4.928 4.928 0 .39.045.765.127 1.124-4.094-.205-7.725-2.165-10.163-5.144-.424.729-.666 1.577-.666 2.476 0 1.708.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.112-.849.171-1.296.171-.317 0-.626-.03-.928-.086.627 1.956 2.444 3.379 4.6 3.419-1.68 1.318-3.809 2.105-6.102 2.105-.396 0-.787-.023-1.17-.067 2.179 1.397 4.768 2.213 7.557 2.213 9.054 0 14-7.496 14-13.986 0-.21-.005-.423-.014-.633.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg></a>
+        <a href="https://www.youtube.com/@avista360" aria-label="YouTube"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.246 11.626.245 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="copyright">
+    <p>© 2026 A Vista 360° — Je vous rends visible &amp; efficace. Tous droits réservés.</p>
+  </div>
+</footer>
+
+<a href="https://rdv.avista360.com" class="v-rdv-sticky" target="_blank" rel="noopener">Prendre RDV téléphonique</a>
+</body>
+</html>
