@@ -103,7 +103,7 @@
     max-width:220px; height:auto; width:120px; margin-bottom:1rem; display:block; margin-left:auto; margin-right:auto;
     border-radius:50%;
   }
-  .v-header-content h1 {
+  .v-header-content h1,.v-header-content .v-banner-brand{
     font-family: var(--v-font-title);
     font-weight: 500;
     font-size: clamp(2.2rem,5.5vw,3.4rem);
@@ -143,7 +143,7 @@
     letter-spacing: -.01em;
   }
   .vista-workspace h2:first-child { margin-top: 0; }
-  .vista-workspace h2.lead-title { font-size: 2.5rem; }
+  .vista-workspace h1.lead-title, .vista-workspace h2.lead-title, h1.lead-title { font-size: 2.5rem; font-family: var(--v-font-title); font-weight: 500; line-height: 1.12; color: var(--v-ink); margin: 0 0 1rem; letter-spacing: -.01em; }
   .vista-workspace h2.gold-title { color: var(--v-brand); }
   .vista-workspace h2.navy-title { color: var(--v-ink); }
   .vista-workspace h3 {
@@ -260,14 +260,14 @@
   <header class="v-header-banner">
     <div class="v-header-content">
       <img class="v-header-logo" src="https://avista-360.github.io/vista360-assets/images/LogoOeil.png" width="120" height="120" alt="A Vista 360">
-      <h1>A Vista 360°</h1>
+      <p class="v-banner-brand">A Vista 360°</p>
       <p>L'Automatisation au cœur de votre productivité &amp; <br>Développement AppSheet en Corse</p>
     </div>
   </header>
 
   <!-- ================= APPSHEET / WORKSPACE ================= -->
   <div class="vista-workspace">
-    <h2 class="lead-title">AppSheet — Solutions de développement d'applications automatisées</h2>
+    <h1 class="lead-title">AppSheet — Solutions de développement d'applications automatisées</h1>
     <p>
       Chez <strong>A Vista 360°</strong>, nous avons une mission claire : rendre votre entreprise plus <strong>productive</strong>, plus <strong>visible</strong> et plus <strong>efficace</strong>.
       Basés en Corse, nous aidons les entrepreneurs, artisans, commerçants et PME à tirer parti de la puissance de l'écosystème
